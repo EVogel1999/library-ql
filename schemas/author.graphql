@@ -1,0 +1,7 @@
+type Author {
+    id: string!
+    name: string!
+    pseudonym: string
+    description: string
+    written: [Book!]!
+}

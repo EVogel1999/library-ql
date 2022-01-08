@@ -1,0 +1,8 @@
+type Book {
+    id: string!
+    name: string!
+    description: string
+    isbn: string!
+    authors: [Author!]!
+    download: string
+}
