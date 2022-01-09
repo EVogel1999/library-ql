@@ -1,14 +1,14 @@
-package books
+package database
 
 import (
 	"context"
 	"errors"
-	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"library-ql/database"
 	"time"
 )
+
+type BookDatabase struct{}
 
 type Book struct {
 	ID          string   `json:"id" bson:"_id,omitempty"`
@@ -21,11 +21,11 @@ type Book struct {
 
 var books *mongo.Collection
 
-func configureDatabase() {
-	books = database.Client.Database(database.Database).Collection(database.Books)
+func (b BookDatabase) configureDatabase() {
+	books = client.Database(database_name).Collection(books_col)
 }
 
-func getBookByID(id string) (*Book, error) {
+func GetBookByID(id string) (*Book, error) {
 	var result *Book
 
 	// Perform search
@@ -52,9 +52,7 @@ func GetBooksByAuthor(authorID string) ([]Book, error) {
 	filter := bson.M{"authors": bson.M{"$in": [...]string{authorID}}}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	fmt.Print(authorID)
 	cursor, err := books.Find(ctx, filter)
-	fmt.Print("Wut")
 	if err == mongo.ErrNoDocuments {
 		return nil, errors.New("books for given author not found")
 	} else if err != nil {

@@ -2,13 +2,13 @@ package main
 
 import (
 	"github.com/graphql-go/graphql"
-	"library-ql/author"
+	"library-ql/controllers"
 )
 
 var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
-		"author": author.FindAuthorById,
+		"author": controllers.FindAuthorById,
 	},
 })
 
