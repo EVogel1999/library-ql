@@ -22,8 +22,8 @@ func configureDatabase() {
 	authors = database.Client.Database(database.Database).Collection(database.Authors)
 }
 
-func getAuthorByID(id string) (*Author, error) {
-	var result *Author
+func getAuthorByID(id string) (Author, error) {
+	var result Author
 
 	// Perform search
 	filter := bson.D{{"_id", id}}
@@ -33,9 +33,9 @@ func getAuthorByID(id string) (*Author, error) {
 
 	// Check if the author was found or if there was an error
 	if err == mongo.ErrNoDocuments {
-		return nil, errors.New("author not found")
+		return Author{}, errors.New("author not found")
 	} else if err != nil {
-		return nil, err
+		return Author{}, err
 	}
 
 	// Return result

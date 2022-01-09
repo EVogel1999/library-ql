@@ -3,6 +3,7 @@ package author
 import (
 	"errors"
 	"github.com/graphql-go/graphql"
+	"library-ql/books"
 )
 
 func InitController() {
@@ -23,6 +24,20 @@ var authorType = graphql.NewObject(graphql.ObjectConfig{
 		},
 		"description": &graphql.Field{
 			Type: graphql.String,
+		},
+		"books": &graphql.Field{
+			Type: graphql.NewList(books.BookType),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				authorID := p.Source.(Author).ID
+				if authorID != "" {
+					books, err := books.GetBooksByAuthor(authorID)
+					if err != nil {
+						return nil, err
+					}
+					return books, nil
+				}
+				return nil, errors.New("could not parse author id from query")
+			},
 		},
 	},
 })

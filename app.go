@@ -4,6 +4,7 @@ import (
 	"github.com/graphql-go/handler"
 	"github.com/joho/godotenv"
 	"library-ql/author"
+	"library-ql/books"
 	"library-ql/database"
 	"log"
 	"net/http"
@@ -22,6 +23,7 @@ func main() {
 
 func initControllers() {
 	author.InitController()
+	books.InitController()
 }
 
 func initGraphQL() {

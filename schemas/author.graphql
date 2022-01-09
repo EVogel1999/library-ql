@@ -3,5 +3,5 @@ type Author {
     name: string!
     pseudonym: string
     description: string
-    written: [Book!]!
+    books: [Book!]!
 }
