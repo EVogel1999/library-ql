@@ -26,7 +26,7 @@ var bookAuthorType = graphql.NewObject(graphql.ObjectConfig{
 })
 
 var bookType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Author",
+	Name: "Book",
 	Fields: graphql.Fields{
 		"id": &graphql.Field{
 			Type: graphql.String,
@@ -38,6 +38,9 @@ var bookType = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.String,
 		},
 		"description": &graphql.Field{
+			Type: graphql.String,
+		},
+		"download": &graphql.Field{
 			Type: graphql.String,
 		},
 		"authors": &graphql.Field{
@@ -56,3 +59,24 @@ var bookType = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
+
+var FindBookById = &graphql.Field{
+	Type:        bookType,
+	Description: "Gets a single book",
+	Args: graphql.FieldConfigArgument{
+		"id": &graphql.ArgumentConfig{
+			Type: graphql.String,
+		},
+	},
+	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+		id, ok := p.Args["id"].(string)
+		if ok {
+			if book, err := database.GetBookByID(id); err != nil {
+				return nil, err
+			} else {
+				return book, nil
+			}
+		}
+		return nil, errors.New("could not parse id from query")
+	},
+}

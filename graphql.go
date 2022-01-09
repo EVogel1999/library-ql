@@ -9,6 +9,7 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
 		"author": controllers.FindAuthorById,
+		"book":   controllers.FindBookById,
 	},
 })
 

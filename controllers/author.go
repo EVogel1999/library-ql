@@ -49,11 +49,11 @@ var FindAuthorById = &graphql.Field{
 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 		id, ok := p.Args["id"].(string)
 		if ok {
-			author, err := database.GetAuthorByID(id)
-			if err != nil {
+			if author, err := database.GetAuthorByID(id); err != nil {
 				return nil, err
+			} else {
+				return author, nil
 			}
-			return author, nil
 		}
 		return nil, errors.New("could not parse id from query")
 	},

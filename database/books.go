@@ -25,8 +25,8 @@ func (b BookDatabase) configureDatabase() {
 	books = client.Database(database_name).Collection(books_col)
 }
 
-func GetBookByID(id string) (*Book, error) {
-	var result *Book
+func GetBookByID(id string) (Book, error) {
+	var result Book
 
 	// Perform search
 	filter := bson.D{{"_id", id}}
@@ -36,9 +36,9 @@ func GetBookByID(id string) (*Book, error) {
 
 	// Check if the author was found or if there was an error
 	if err == mongo.ErrNoDocuments {
-		return nil, errors.New("book not found")
+		return Book{}, errors.New("book not found")
 	} else if err != nil {
-		return nil, err
+		return Book{}, err
 	}
 
 	// Return result
